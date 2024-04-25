@@ -1,24 +1,25 @@
 import { useRef, useState } from "react";
 import "./App.css";
-import Button from "./components/Button";
 
 function App() {
-  const ref = useRef<HTMLInputElement>(null);
-  const [value, setValue] = useState("");
+  const ref = useRef<number>(0);
+  console.log("rendering", ref);
+  const [count, setCount] = useState(0);
 
-  // dont render every moments when put text to input element
-  const handleClick = () => {
-    if (ref.current) {
-      setValue(ref.current.value);
-      ref.current.focus();
-    }
+  const handleRefClick = () => {
+    ref.current = ref.current + 1;
+    console.log("ref.current: ", ref.current);
+  };
+  const handleStateClick = () => {
+    setCount(count + 1);
   };
 
   return (
     <div>
-      <input id="one" ref={ref} />
-      <button onClick={handleClick}>show value</button>
-      <p>value: {value}</p>
+      <button onClick={handleRefClick}>useRef: {ref.current}</button>
+      <button onClick={handleStateClick}>
+        useState: {`${count}, ${ref.current}`}
+      </button>
     </div>
   );
 }
