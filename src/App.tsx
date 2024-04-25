@@ -1,19 +1,21 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 import "./App.css";
 import Button from "./components/Button";
 
 function App() {
-  const [count, setCount] = useState(0);
+  const ref = useRef<HTMLInputElement>(null);
 
   const handleClick = () => {
-    setCount(count + 1);
+    if (ref.current) {
+      ref.current.focus();
+      console.log("id", ref.current.id); // id one
+    }
   };
 
   return (
     <div>
-      <Button count={count} onClick={handleClick} />
-      <Button count={count} onClick={handleClick} />
-      <Button count={count} onClick={handleClick} />
+      <input id="one" ref={ref} />
+      <button onClick={handleClick}>focus</button>
     </div>
   );
 }
