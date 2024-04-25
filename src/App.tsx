@@ -2,24 +2,33 @@ import { useRef, useState } from "react";
 import "./App.css";
 
 function App() {
-  const ref = useRef<number>(0);
-  console.log("rendering", ref);
-  const [count, setCount] = useState(0);
+  const [start, setStart] = useState(0);
+  const [now, setNow] = useState(0);
+  const ref = useRef<number | null>(null);
 
-  const handleRefClick = () => {
-    ref.current = ref.current + 1;
-    console.log("ref.current: ", ref.current);
+  const handleStartClick = () => {
+    setStart(Date.now());
+    setNow(Date.now());
+
+    if (ref.current) {
+      window.clearInterval(ref.current);
+    }
+    ref.current = window.setInterval(() => {
+      setNow(Date.now());
+    }, 100); // 0.1seconds
   };
-  const handleStateClick = () => {
-    setCount(count + 1);
+
+  const handleEndClick = () => {
+    if (ref.current) {
+      window.clearInterval(ref.current);
+    }
   };
 
   return (
     <div>
-      <button onClick={handleRefClick}>useRef: {ref.current}</button>
-      <button onClick={handleStateClick}>
-        useState: {`${count}, ${ref.current}`}
-      </button>
+      <p>Elapsed time: {(now - start) / 1000}</p>
+      <button onClick={handleStartClick}>Start</button>
+      <button onClick={handleEndClick}>End</button>
     </div>
   );
 }
